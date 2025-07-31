@@ -11,8 +11,7 @@
     <p class="disclaimer">Compiled from public records and media reports. Verify independently.</p>
     <input type="text" id="searchBar" placeholder="Search by name, crime, or punishment...">
     
-    <h2>Completed Cases</h2>
-    <table id="completedTable">
+    <table id="celebrityTable">
         <tr>
             <th>Name</th>
             <th>Date</th>
@@ -22,19 +21,8 @@
         </tr>
     </table>
 
-    <h2>Pending Cases</h2>
-    <table id="pendingTable">
-        <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Crime</th>
-            <th>Punishment/Status</th>
-            <th>Source</th>
-        </tr>
-    </table>
-
     <script>
-        const completedCases = [
+        const celebrities = [
             { name: "Ahuja, Shiney", date: "June 14, 2009", crime: "Rape", punishment: "Convicted 2011, served 7 years", source: "Indian Express" },
             { name: "Allen, Tim", date: "October 1978", crime: "Drug trafficking", punishment: "Convicted, served 2 years 4 months", source: "Geoffrey G. Nathan Law" },
             { name: "Beausoleil, Bobby", date: "1969", crime: "Murder", punishment: "Convicted 1970, life in prison", source: "Grunge" },
@@ -83,71 +71,33 @@
             { name: "Wahlberg, Mark", date: "April 1988", crime: "Felony assault", punishment: "Convicted 1988, served 45 days", source: "Redbookmag" },
             { name: "Weinstein, Harvey", date: "May 25, 2018", crime: "Rape", punishment: "Convicted 2020, serving 23 years; convicted 2022, serving 16 years", source: "AOL" },
             { name: "Wu, Kris", date: "July 2021", crime: "Rape", punishment: "Convicted 2022, serving 13 years", source: "AOL" },
-            { name: "Exotic, Joe", date: "2018", crime: "Wildlife smuggling", punishment: "Convicted 2020, serving 21 years", source: "AOL" }
-        ];
-
-        const pendingCases = [
+            { name: "Exotic, Joe", date: "2018", crime: "Wildlife smuggling", punishment: "Convicted 2020, serving 21 years", source: "AOL" },
             { name: "Combs, Sean", date: "September 16, 2024", crime: "Sex trafficking", punishment: "Convicted 2025, in jail awaiting sentencing", source: "NBC News" },
             { name: "Lil Durk", date: "October 17, 2024", crime: "Conspiracy to commit murder", punishment: "In jail awaiting trial", source: "CBS Chicago" },
             { name: "YNW Melly", date: "February 2019", crime: "Murder", punishment: "In jail awaiting retrial", source: "XXL" }
         ];
 
-        const completedTable = document.getElementById('completedTable');
-        completedCases.forEach(case => {
-            const row = completedTable.insertRow();
-            row.innerHTML = `<td>${case.name}</td><td>${case.date}</td><td>${case.crime}</td><td>${case.punishment}</td><td>${case.source}</td>`;
-        });
-
-        const pendingTable = document.getElementById('pendingTable');
-        pendingCases.forEach(case => {
-            const row = pendingTable.insertRow();
-            row.innerHTML = `<td>${case.name}</td><td>${case.date}</td><td>${case.crime}</td><td>${case.punishment}</td><td>${case.source}</td>`;
+        const celebrityTable = document.getElementById('celebrityTable');
+        celebrities.forEach(celebrity => {
+            const row = celebrityTable.insertRow();
+            row.innerHTML = `<td>${celebrity.name}</td><td>${celebrity.date}</td><td>${celebrity.crime}</td><td>${celebrity.punishment}</td><td>${celebrity.source}</td>`;
         });
 
         document.getElementById('searchBar').addEventListener('keyup', function() {
             let input = this.value.toLowerCase();
-            let tables = ['completedTable', 'pendingTable'];
-            tables.forEach(tableId => {
-                let rows = document.getElementById(tableId).getElementsByTagName('tr');
-                for (let i = 1; i < rows.length; i++) {
-                    let cells = rows[i].getElementsByTagName('td');
-                    let match = false;
-                    for (let j = 0; j < cells.length; j++) {
-                        if (cells[j].textContent.toLowerCase().includes(input)) {
-                            match = true;
-                            break;
-                        }
-                    }
-                    rows[i].style.display = match ? '' : 'none';
-                }
-            });
-        });
-
-        function sortTable(n, tableId) {
-            let table = document.getElementById(tableId);
-            let rows, switching = true, i, x, y, shouldSwitch, dir = 'asc', switchcount = 0;
-            while (switching) {
-                switching = false;
-                rows = table.rows;
-                for (i = 1; i < (rows.length - 1); i++) {
-                    shouldSwitch = false;
-                    x = rows[i].getElementsByTagName('td')[n].textContent.toLowerCase();
-                    y = rows[i + 1].getElementsByTagName('td')[n].textContent.toLowerCase();
-                    if (dir === 'asc' && x > y || dir === 'desc' && x < y) {
-                        shouldSwitch = true;
+            let rows = document.getElementById('celebrityTable').getElementsByTagName('tr');
+            for (let i = 1; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName('td');
+                let match = false;
+                for (let j = 0; j < cells.length; j++) {
+                    if (cells[j].textContent.toLowerCase().includes(input)) {
+                        match = true;
                         break;
                     }
                 }
-                if (shouldSwitch) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    switchcount++;
-                } else if (switchcount === 0 && dir === 'asc') {
-                    dir = 'desc';
-                    switching = true;
-                }
+                rows[i].style.display = match ? '' : 'none';
             }
-        }
+        });
     </script>
 </body>
 </html>
