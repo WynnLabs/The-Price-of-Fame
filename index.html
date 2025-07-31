@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous People Charged with Murder or Rape (1970s–2025)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        h1, h2 { text-align: center; color: #333; }
+        p.disclaimer { text-align: center; color: #666; font-style: italic; }
+        #searchBar { width: 100%; padding: 12px; margin: 15px 0; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 40px; background-color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #333; color: #fff; cursor: pointer; }
+        th:hover { background-color: #555; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #f1f1f1; }
+        @media screen and (max-width: 800px) {
+            table { font-size: 14px; }
+            th, td { padding: 8px; }
+            #searchBar { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Famous People Charged with Murder or Rape (1970s–2025)</h1>
+    <p class="disclaimer">This database is compiled from public records and media reports. Information is for informational purposes and should be independently verified.</p>
+    <input type="text" id="searchBar" placeholder="Search by name, crime, victim, or state...">
+    
+    <h2>Completed Cases</h2>
+    <table id="completedTable">
+        <tr>
+            <th onclick="sortTable(0, 'completedTable')">Name</th>
+            <th onclick="sortTable(1, 'completedTable')">Date of Arrest/Charge</th>
+            <th onclick="sortTable(2, 'completedTable')">Crime(s)</th>
+            <th onclick="sortTable(3, 'completedTable')">Victim(s)</th>
+            <th onclick="sortTable(4, 'completedTable')">Punishment/Outcome</th>
+            <th onclick="sortTable(5, 'completedTable')">Source(s)</th>
+        </tr>
+    </table>
+
+    <h2>Pending Cases</h2>
+    <table id="pendingTable">
+        <tr>
+            <th onclick="sortTable(0, 'pendingTable')">Name</th>
+            <th onclick="sortTable(1, 'pendingTable')">Date of Arrest/Charge</th>
+            <th onclick="sortTable(2, 'pendingTable')">Crime(s)</th>
+            <th onclick="sortTable(3, 'pendingTable')">Victim(s)</th>
+            <th onclick="sortTable(4, 'pendingTable')">Status</th>
+            <th onclick="sortTable(5, 'pendingTable')">Source(s)</th>
+        </tr>
+    </table>
+
+    <script>
+        // Data for Completed Cases
+        const completedCases = [
+            { name: "Ahuja, Shiney (Actor, India)", date: "June 14, 2009", crime: "Rape", victim: "Domestic worker", outcome: "Convicted 2011; 7 years; released on bail 2012 pending appeal", sources: "Indian Express" },
+            { name: "Blake, Robert (Actor, CA)", date: "April 18, 2002", crime: "Murder (first-degree)", victim: "Bonnie Lee Bakley", outcome: "Acquitted 2005; liable in civil suit, $15M", sources: "<a href='https://www.cnn.com'>CNN</a>, Los Angeles Times" },
+            { name: "Broderick, Matthew (Actor, NY)", date: "August 5, 1987", crime: "Vehicular manslaughter", victim: "Anna Gallagher, Margaret Doherty", outcome: "Pleaded guilty to careless driving; fined $175", sources: "<a href='https://www.cnn.com'>CNN</a>, New York Post" },
+            { name: "Cassidy (Barry Reese) (Rapper, PA)", date: "April 2005", crime: "Involuntary manslaughter", victim: "Desmond Hawkins", outcome: "Convicted 2006; 8 months", sources: "<a href='https://www.ranker.com'>Ranker</a>" },
+            { name: "C-Murder (Corey Miller) (Rapper, LA)", date: "January 2002", crime: "Murder (second-degree)", victim: "Steve Thomas", outcome: "Convicted 2009; life in prison", sources: "LiveAbout" },
+            { name: "Cosby, Bill (Actor/Comedian, PA)", date: "December 30, 2015", crime: "Aggravated indecent assault (rape equivalent)", victim: "Andrea Constand", outcome: "Convicted 2018; 3–10 years; overturned 2021", sources: "<a href='https://www.nytimes.com'>New York Times</a>, <a href='https://www.cnn.com'>CNN</a>" },
+            { name: "Dresta (Andre Wicker) (Rapper, CA)", date: "1992", crime: "Voluntary manslaughter", victim: "Tyrone Thomas", outcome: "Pleaded no contest; 1 year probation", sources: "LiveAbout" },
+            { name: "G. Dep (Trevell Coleman) (Rapper, NY)", date: "December 2010", crime: "Murder (second-degree)", victim: "John Henkel", outcome: "Convicted 2012; 15 years to life; paroled 2021", sources: "<a href='https://www.ranker.com'>Ranker</a>" },
+            { name: "Gucci Mane (Radric Davis) (Rapper, Atlanta, GA)", date: "May 2005", crime: "Murder", victim: "Henry Lee Clark III", outcome: "Charges dropped 2006; self-defense", sources: "<a href='https://www.ranker.com'>Ranker</a>" },
+            { name: "Hardimon, Vinson (Young Vito) (Rapper, Atlanta, GA)", date: "December 26, 2011", crime: "Murder, aggravated assault", victim: "Mario Hamilton (Slim Dunkin)", outcome: "Acquitted or charges dropped", sources: "Reuters" },
+            { name: "Hernandez, Aaron (Athlete, MA)", date: "June 26, 2013", crime: "Murder (first-degree)", victim: "Odin Lloyd", outcome: "Convicted 2015; life without parole; died by suicide 2017", sources: "<a href='https://www.espn.com'>ESPN</a>, Boston Globe" },
+            { name: "Jace, Michael (Actor, CA)", date: "May 19, 2014", crime: "Murder (second-degree)", victim: "April Jace", outcome: "Convicted 2016; 40 years to life", sources: "Los Angeles Times, <a href='https://www.ranker.com'>Ranker</a>" },
+            { name: "J-Dee (Dasean Cooper) (Rapper, CA)", date: "1993", crime: "Murder", victim: "Unnamed victim", outcome: "Convicted; life in prison", sources: "LiveAbout" },
+            { name: "Kelly, R. (Musician/Rapper, Chicago, IL)", date: "February 22, 2019", crime: "Aggravated criminal sexual abuse (rape equivalent)", victim: "Multiple minors", outcome: "Convicted 2022; 31 years", sources: "Chicago Tribune, <a href='https://www.buzzfeed.com'>BuzzFeed</a>" },
+            { name: "Knight, Suge (Producer/Rapper, CA)", date: "January 29, 2015", crime: "Murder, voluntary manslaughter", victim: "Terry Carter", outcome: "Pleaded no contest 2018; 28 years", sources: "Los Angeles Times, WatchMojo" },
+            { name: "Lewis, Johnny (Actor, CA)", date: "September 26, 2012", crime: "Murder (second-degree)", victim: "Catherine Davis", outcome: "Died during arrest; no trial", sources: "Los Angeles Times, WatchMojo" },
+            { name: "Liggins, Charles (C-Murda) (Rapper, Chicago, IL)", date: "October 2020", crime: "Murder in racketeering", victim: "Carlton Weekly (FBG Duck)", outcome: "Convicted January 2025; life in prison", sources: "Chicago Tribune" },
+            { name: "Mac Minister (Andre Dow) (Rapper, CA)", date: "2005", crime: "Murder (first-degree, two counts)", victim: "Anthony Watkins (Fat Tone), Jermaine Atkins", outcome: "Convicted 2008; life in prison", sources: "LiveAbout" },
+            { name: "Masterson, Danny (Actor, CA)", date: "June 17, 2020", crime: "Rape (three counts)", victim: "Jane Roe 1, Jane Roe 2, Jane Roe 3", outcome: "Convicted 2023; 30 years to life", sources: "Los Angeles Times, <a href='https://www.buzzfeed.com'>BuzzFeed</a>" },
+            { name: "Max B (Charly Wingate) (Rapper, NY)", date: "September 2006", crime: "Murder, conspiracy to commit murder", victim: "David Taylor", outcome: "Convicted 2009; 75 years, commuted to 20 years 2023", sources: "LiveAbout" },
+            { name: "Meggett, Dave (Athlete, SC)", date: "2009", crime: "Rape", victim: "Unnamed woman", outcome: "Convicted 2009; 30 years", sources: "<a href='https://www.buzzfeed.com'>BuzzFeed</a>" },
+            { name: "Pistorius, Oscar (Athlete, South Africa)", date: "February 14, 2013", crime: "Murder (premeditated)", victim: "Reeva Steenkamp", outcome: "Convicted of culpable homicide 2014, upgraded to murder 2015; 13 years, 5 months; paroled 2024", sources: "<a href='https://www.bbc.com'>BBC</a>, The Guardian" },
+            { name: "Polanski, Roman (Director, CA)", date: "March 10, 1977", crime: "Unlawful sexual intercourse with a minor (rape equivalent)", victim: "Samantha Geimer", outcome: "Pleaded guilty; 42 days in jail; fled U.S., fugitive", sources: "Los Angeles Times, <a href='https://www.imdb.com'>IMDb</a>" },
+            { name: "Ra Diggs (Ronald Herron) (Rapper, NY)", date: "2010", crime: "Murder (three counts), racketeering", victim: "Multiple victims", outcome: "Convicted 2014; life in prison", sources: "LiveAbout" },
+            { name: "Simpson, O.J. (Athlete/Actor, CA)", date: "June 17, 1994", crime: "Murder (two counts, first-degree)", victim: "Nicole Brown Simpson, Ronald Goldman", outcome: "Acquitted 1995; liable in civil suit, $33.5M", sources: "<a href='https://www.nytimes.com'>New York Times</a>, <a href='https://www.cnn.com'>CNN</a>" },
+            { name: "Snoop Dogg (Calvin Broadus) (Rapper, CA)", date: "August 1993", crime: "Murder (first-degree)", victim: "Phillip Woldemariam", outcome: "Acquitted 1996; self-defense", sources: "<a href='https://www.rollingstone.com'>Rolling Stone</a>, <a href='https://www.ranker.com'>Ranker</a>" },
+            { name: "Spector, Phil (Producer, CA)", date: "February 3, 2003", crime: "Murder (second-degree)", victim: "Lana Clarkson", outcome: "Convicted 2009; 19 years to life; died 2021", sources: "<a href='https://www.rollingstone.com'>Rolling Stone</a>, <a href='https://www.buzzfeed.com'>BuzzFeed</a>" },
+            { name: "Tay-K (Taymor McIntyre) (Rapper, TX)", date: "July 2016", crime: "Murder, robbery", victim: "Ethan Walker", outcome: "Convicted 2019; 55 years", sources: "XXL" },
+            { name: "Tory Lanez (Daystar Peterson) (Rapper, CA)", date: "July 2020", crime: "Assault with a firearm (murder equivalent, attempted)", victim: "Megan Thee Stallion", outcome: "Convicted 2022; 10 years", sources: "XXL" },
+            { name: "Tyson, Mike (Athlete, IN)", date: "July 19, 1991", crime: "Rape", victim: "Desiree Washington", outcome: "Convicted 1992; 6 years, served 3", sources: "<a href='https://www.nytimes.com'>New York Times</a>, <a href='https://www.espn.com'>ESPN</a>" },
+            { name: "Vicious, Sid (Musician, NY)", date: "October 12, 1978", crime: "Murder (second-degree)", victim: "Nancy Spungen", outcome: "Charged; died 1979 before trial", sources: "<a href='https://www.rollingstone.com'>Rolling Stone</a>, <a href='https://www.ranker.com'>Ranker</a>" },
+            { name: "Weinstein, Harvey (Producer, NY/CA)", date: "May 25, 2018", crime: "Rape, criminal sexual act", victim: "Annabella Sciorra, others", outcome: "Convicted 2020 (NY), 23 years, overturned 2024; convicted 2022 (LA), 16 years", sources: "<a href='https://www.nytimes.com'>New York Times</a>, <a href='https://www.bbc.com'>BBC</a>" }
+        ];
+
+        // Data for Pending Cases
+        const pendingCases = [
+            { name: "Combs, Sean (Diddy) (Rapper/Producer, CA)", date: "September 16, 2024", crime: "Sex trafficking (rape equivalent), racketeering", victim: "Cassie Ventura, others", status: "Convicted on two counts July 2025; sentencing pending", sources: "<a href='https://www.nbcnews.com'>NBC News</a>, <a href='https://www.nytimes.com'>New York Times</a>" },
+            { name: "Davis, Duane (Keffe D) (Gang Figure/Rapper Associate, NV)", date: "September 2023", crime: "Murder", victim: "Tupac Shakur", status: "Pleaded not guilty; trial ongoing, set to conclude November 2025", sources: "Newsweek" },
+            { name: "Lil Durk (Durk Banks) (Rapper, Chicago, IL/FL)", date: "October 17, 2024", crime: "Conspiracy to commit murder-for-hire", victim: "Saviay’a Robinson", status: "Awaiting trial, October 2025; no bail", sources: "CBS Chicago, <a href='https://www.nbcnews.com'>NBC News</a>" },
+            { name: "YNW Melly (Jamell Demons) (Rapper, FL)", date: "February 2019", crime: "Murder (two counts)", victim: "Christopher Thomas (YNW Juvy), Anthony Williams (YNW Sakchaser)", status: "Mistrial 2023; retrial September 2025", sources: "XXL" }
+        ];
+
+        // Populate Completed Table
+        const completedTable = document.getElementById('completedTable');
+        completedCases.forEach(case => {
+            const row = completedTable.insertRow();
+            row.innerHTML = `
+                <td>${case.name}</td>
+                <td>${case.date}</td>
+                <td>${case.crime}</td>
+                <td>${case.victim}</td>
+                <td>${case.outcome}</td>
+                <td>${case.sources}</td>
+            `;
+        });
+
+        // Populate Pending Table
+        const pendingTable = document.getElementById('pendingTable');
+        pendingCases.forEach(case => {
+            const row = pendingTable.insertRow();
+            row.innerHTML = `
+                <td>${case.name}</td>
+                <td>${case.date}</td>
+                <td>${case.crime}</td>
+                <td>${case.victim}</td>
+                <td>${case.status}</td>
+                <td>${case.sources}</td>
+            `;
+        });
+
+        // Search Functionality
+        document.getElementById('searchBar').addEventListener('keyup', function() {
+            let input = this.value.toLowerCase();
+            let tables = ['completedTable', 'pendingTable'];
+            tables.forEach(tableId => {
+                let rows = document.getElementById(tableId).getElementsByTagName('tr');
+                for (let i = 1; i < rows.length; i++) {
+                    let cells = rows[i].getElementsByTagName('td');
+                    let match = false;
+                    for (let j = 0; j < cells.length; j++) {
+                        if (cells[j].textContent.toLowerCase().includes(input)) {
+                            match = true;
+                            break;
+                        }
+                    }
+                    rows[i].style.display = match ? '' : 'none';
+                }
+            });
+        });
+
+        // Sort Table Functionality
+        function sortTable(n, tableId) {
+            let table = document.getElementById(tableId);
+            let rows, switching = true, i, x, y, shouldSwitch, dir = 'asc', switchcount = 0;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName('td')[n].textContent.toLowerCase();
+                    y = rows[i + 1].getElementsByTagName('td')[n].textContent.toLowerCase();
+                    if (dir === 'asc' && x > y || dir === 'desc' && x < y) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else if (switchcount === 0 && dir === 'asc') {
+                    dir = 'desc';
+                    switching = true;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
